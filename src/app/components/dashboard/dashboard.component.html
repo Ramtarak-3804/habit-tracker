@@ -1,0 +1,144 @@
+<div class="dashboard-container">
+  <div class="row">
+    <div class="col-12 mb-4">
+      <div class="welcome-section">
+        <h1>Dashboard</h1>
+        <p>Welcome to your Split Expense Tracker</p>
+        <button routerLink="/expenses/new" class="btn btn-primary">
+          <i class="fas fa-plus"></i> Add New Expense
+        </button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Balance Summary Cards -->
+  <div class="row mb-4">
+    <div class="col-md-4 mb-3">
+      <div class="card summary-card owed">
+        <div class="card-body">
+          <div class="card-icon">
+            <i class="fas fa-arrow-down"></i>
+          </div>
+          <div class="card-details">
+            <h5 class="card-title">Total Owed to You</h5>
+            <h3 class="card-amount" *ngIf="!isLoading">
+              {{ owedAmount | currency }}
+            </h3>
+            <div class="placeholder-loading" *ngIf="isLoading">
+              <div class="animated-background"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-md-4 mb-3">
+      <div class="card summary-card owing">
+        <div class="card-body">
+          <div class="card-icon">
+            <i class="fas fa-arrow-up"></i>
+          </div>
+          <div class="card-details">
+            <h5 class="card-title">Total You Owe</h5>
+            <h3 class="card-amount" *ngIf="!isLoading">
+              {{ owingAmount | currency }}
+            </h3>
+            <div class="placeholder-loading" *ngIf="isLoading">
+              <div class="animated-background"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-md-4 mb-3">
+      <div class="card summary-card total" [ngClass]="{'positive': totalBalance > 0, 'negative': totalBalance < 0}">
+        <div class="card-body">
+          <div class="card-icon">
+            <i class="fas fa-balance-scale"></i>
+          </div>
+          <div class="card-details">
+            <h5 class="card-title">Total Balance</h5>
+            <h3 class="card-amount" *ngIf="!isLoading">
+              {{ totalBalance | currency }}
+            </h3>
+            <div class="placeholder-loading" *ngIf="isLoading">
+              <div class="animated-background"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Recent Activity and Groups -->
+  <div class="row">
+    <!-- Recent Activity -->
+    <div class="col-lg-8 mb-4">
+      <div class="card">
+        <div class="card-header">
+          <h5>Recent Activity</h5>
+        </div>
+        <div class="card-body">
+          <div class="activity-list" *ngIf="recentExpenses.length > 0">
+            <div class="activity-item" *ngFor="let expense of recentExpenses">
+              <div class="activity-icon">
+                <i class="fas" [ngClass]="expense.category.icon"></i>
+              </div>
+              <div class="activity-details">
+                <h6>{{ expense.description }}</h6>
+                <p>{{ expense.paidBy.name }} paid {{ expense.amount | currency }}</p>
+                <small>{{ expense.date | date:'medium' }}</small>
+              </div>
+              <div class="activity-amount" [ngClass]="{'text-success': expense.yourShare < 0, 'text-danger': expense.yourShare > 0}">
+                <span *ngIf="expense.yourShare < 0">You get back {{ -expense.yourShare | currency }}</span>
+                <span *ngIf="expense.yourShare > 0">You owe {{ expense.yourShare | currency }}</span>
+                <span *ngIf="expense.yourShare === 0">Settled</span>
+              </div>
+            </div>
+          </div>
+          <div class="empty-state" *ngIf="recentExpenses.length === 0">
+            <i class="fas fa-receipt"></i>
+            <p>No recent expenses found</p>
+            <button routerLink="/expenses/new" class="btn btn-sm btn-outline-primary">Add your first expense</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Groups -->
+    <div class="col-lg-4 mb-4">
+      <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h5>Your Groups</h5>
+          <button routerLink="/groups/new" class="btn btn-sm btn-outline-primary">
+            <i class="fas fa-plus"></i> New
+          </button>
+        </div>
+        <div class="card-body">
+          <div class="groups-list" *ngIf="groups.length > 0">
+            <div class="group-item" *ngFor="let group of groups" [routerLink]="['/groups', group.id]">
+              <div class="group-icon">
+                <i class="fas" [ngClass]="group.icon || 'fa-users'"></i>
+              </div>
+              <div class="group-details">
+                <h6>{{ group.name }}</h6>
+                <p>{{ group.memberCount }} members</p>
+              </div>
+              <div class="group-amount" [ngClass]="{'text-success': group.balance < 0, 'text-danger': group.balance > 0}">
+                <span *ngIf="group.balance < 0">You get back {{ -group.balance | currency }}</span>
+                <span *ngIf="group.balance > 0">You owe {{ group.balance | currency }}</span>
+                <span *ngIf="group.balance === 0">Settled</span>
+              </div>
+            </div>
+          </div>
+          <div class="empty-state" *ngIf="groups.length === 0">
+            <i class="fas fa-users"></i>
+            <p>No groups found</p>
+            <button routerLink="/groups/new" class="btn btn-sm btn-outline-primary">Create your first group</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

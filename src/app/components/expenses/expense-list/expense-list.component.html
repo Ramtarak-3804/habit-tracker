@@ -1,0 +1,98 @@
+<div class="expense-list-container">
+  <div class="expenses-header">
+    <h2>Your Expenses</h2>
+    <button routerLink="/expenses/new" class="btn btn-primary">
+      <i class="fas fa-plus"></i> Add Expense
+    </button>
+  </div>
+  
+  <!-- Filters and Search -->
+  <div class="filters-section">
+    <div class="row">
+      <div class="col-md-4">
+        <div class="search-box">
+          <input 
+            type="text" 
+            class="form-control" 
+            placeholder="Search expenses..." 
+            [(ngModel)]="searchTerm"
+            (input)="onSearch()"
+          >
+          <i class="fas fa-search"></i>
+        </div>
+      </div>
+      
+      <div class="col-md-8">
+        <div class="filter-buttons">
+          <div class="dropdown filter-dropdown">
+            <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="categoryFilter" data-bs-toggle="dropdown">
+              {{ selectedCategory || 'All Categories' }}
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="categoryFilter">
+              <li><a class="dropdown-item" (click)="onCategoryFilter(null)">All Categories</a></li>
+              <li *ngFor="let category of categories">
+                <a class="dropdown-item" (click)="onCategoryFilter(category.name)">{{ category.name }}</a>
+              </li>
+            </ul>
+          </div>
+          
+          <div class="dropdown filter-dropdown" *ngIf="groups.size > 0">
+            <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="groupFilter" data-bs-toggle="dropdown">
+              {{ selectedGroup || 'All Groups' }}
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="groupFilter">
+              <li><a class="dropdown-item" (click)="onGroupFilter(null)">All Groups</a></li>
+              <li *ngFor="let group of groups">
+                <a class="dropdown-item" (click)="onGroupFilter(group)">{{ group }}</a>
+              </li>
+            </ul>
+          </div>
+          
+          <button (click)="clearFilters()" class="btn btn-link" *ngIf="searchTerm || selectedCategory || selectedGroup">
+            Clear Filters
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Loading Spinner -->
+  <div class="text-center my-5" *ngIf="isLoading">
+    <div class="spinner-border" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+  
+  <!-- Expenses List -->
+  <div class="expenses-list" *ngIf="!isLoading">
+    <div *ngIf="filteredExpenses.length === 0" class="empty-state">
+      <i class="fas fa-receipt"></i>
+      <p>No expenses found</p>
+      <button routerLink="/expenses/new" class="btn btn-outline-primary">Add your first expense</button>
+    </div>
+    
+    <div class="expense-card" *ngFor="let expense of filteredExpenses" [routerLink]="['/expenses', expense.id]">
+      <div class="expense-icon">
+        <i class="fas" [ngClass]="expense.category.icon"></i>
+      </div>
+      <div class="expense-details">
+        <h5>{{ expense.description }}</h5>
+        <div class="expense-metadata">
+          <span class="date">{{ expense.date | date:'MMM d, y' }}</span>
+          <span class="separator">•</span>
+          <span class="paid-by">{{ expense.paidBy.id === 1 ? 'You' : expense.paidBy.name }} paid</span>
+          <span class="separator">•</span>
+          <span class="group" *ngIf="expense.group">{{ expense.group.name }}</span>
+        </div>
+      </div>
+      <div class="expense-amount" [ngClass]="{'text-success': expense.yourShare < 0, 'text-danger': expense.yourShare > 0}">
+        <div class="amount">{{ expense.amount | currency }}</div>
+        <div class="share-status">
+          <span *ngIf="expense.yourShare < 0">You get back {{ -expense.yourShare | currency }}</span>
+          <span *ngIf="expense.yourShare > 0">You owe {{ expense.yourShare | currency }}</span>
+          <span *ngIf="expense.yourShare === 0">Settled</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

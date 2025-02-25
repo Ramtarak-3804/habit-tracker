@@ -1,0 +1,165 @@
+.expense-form-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px 0;
+  
+  .card {
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    border: none;
+    
+    .card-header {
+      background-color: #fff;
+      border-bottom: 1px solid #eaeaea;
+      padding: 20px;
+      
+      h4 {
+        margin: 0;
+        font-weight: 600;
+        color: #333;
+      }
+    }
+    
+    .card-body {
+      padding: 25px;
+    }
+  }
+  
+  .loading-spinner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 200px;
+  }
+  
+  .form-label {
+    font-weight: 500;
+    margin-bottom: 8px;
+    color: #555;
+  }
+  
+  .split-options {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 20px;
+    
+    h5 {
+      margin-bottom: 15px;
+      font-weight: 600;
+      color: #444;
+    }
+    
+    .split-type-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      
+      .btn {
+        flex: 1;
+        min-width: 150px;
+        
+        &.btn-primary {
+          background-color: #11998e;
+          border-color: #11998e;
+          
+          &:hover, &:focus {
+            background-color: #0d8a7e;
+            border-color: #0d8a7e;
+          }
+        }
+        
+        &.btn-outline-primary {
+          color: #11998e;
+          border-color: #11998e;
+          
+          &:hover, &:focus {
+            background-color: #11998e;
+            color: white;
+          }
+        }
+      }
+    }
+  }
+  
+  .participants-section {
+    h5 {
+      font-weight: 600;
+      color: #444;
+    }
+    
+    .participants-list {
+      border: 1px solid #eaeaea;
+      border-radius: 8px;
+      overflow: hidden;
+      
+      .participant-row {
+        display: flex;
+        align-items: center;
+        padding: 12px 15px;
+        border-bottom: 1px solid #eaeaea;
+        
+        &:last-child {
+          border-bottom: none;
+        }
+        
+        .participant-info {
+          flex: 1;
+          display: flex;
+          align-items: center;
+          
+          i {
+            color: #11998e;
+            margin-right: 10px;
+          }
+          
+          .participant-name {
+            font-weight: 500;
+          }
+        }
+        
+        .participant-share {
+          width: 120px;
+          margin: 0 15px;
+          
+          input {
+            text-align: right;
+            padding-right: 10px;
+          }
+        }
+        
+        .btn-icon {
+          padding: 6px 8px;
+          color: #999;
+          transition: all 0.2s;
+          
+          &:hover {
+            color: #dc3545;
+          }
+        }
+      }
+    }
+  }
+  
+  .form-buttons {
+    margin-top: 30px;
+    display: flex;
+    justify-content: flex-end;
+    
+    .btn-primary {
+      background-color: #11998e;
+      border-color: #11998e;
+      min-width: 150px;
+      
+      &:hover, &:focus {
+        background-color: #0d8a7e;
+        border-color: #0d8a7e;
+      }
+      
+      &:disabled {
+        background-color: #75c5be;
+        border-color: #75c5be;
+      }
+    }
+  }
+}

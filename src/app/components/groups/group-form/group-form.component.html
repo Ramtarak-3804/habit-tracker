@@ -1,0 +1,130 @@
+<div class="group-form-container">
+  <div class="card">
+    <div class="card-header">
+      <h4>{{ isEditing ? 'Edit Group' : 'Create New Group' }}</h4>
+    </div>
+    <div class="card-body">
+      <div *ngIf="isLoading" class="loading-spinner">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+      
+      <form [formGroup]="groupForm" (ngSubmit)="onSubmit()" *ngIf="!isLoading">
+        <!-- Group Info -->
+        <div class="row mb-4">
+          <div class="col-md-8">
+            <div class="mb-3">
+              <label for="name" class="form-label">Group Name*</label>
+              <input 
+                type="text" 
+                class="form-control" 
+                id="name" 
+                formControlName="name" 
+                placeholder="Enter a name for your group"
+                [ngClass]="{'is-invalid': groupForm.get('name')?.touched && groupForm.get('name')?.invalid}"
+              >
+              <div class="invalid-feedback" *ngIf="groupForm.get('name')?.touched && groupForm.get('name')?.invalid">
+                Group name is required
+              </div>
+            </div>
+            
+            <div class="mb-3">
+              <label for="description" class="form-label">Description (optional)</label>
+              <textarea 
+                class="form-control" 
+                id="description" 
+                formControlName="description" 
+                placeholder="A short description of what this group is for"
+                rows="3"
+              ></textarea>
+            </div>
+          </div>
+          
+          <div class="col-md-4">
+            <label class="form-label">Group Icon</label>
+            <div class="icon-selector">
+              <div 
+                *ngFor="let icon of groupIcons" 
+                class="icon-option" 
+                [class.selected]="groupForm.get('icon')?.value === icon.id"
+                (click)="groupForm.get('icon')?.setValue(icon.id)"
+              >
+                <div class="icon-circle">
+                  <i class="fas" [ngClass]="icon.id"></i>
+                </div>
+                <span class="icon-name">{{ icon.name }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Members Section -->
+        <div class="members-section mb-4">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5>Group Members</h5>
+            
+            <!-- Add member dropdown -->
+            <div class="dropdown">
+              <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="addMemberDropdown" data-bs-toggle="dropdown">
+                <i class="fas fa-user-plus"></i> Add Member
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="addMemberDropdown">
+                <li *ngFor="let contact of contacts">
+                  <a 
+                    class="dropdown-item" 
+                    href="javascript:void(0)" 
+                    (click)="addMember(contact)"
+                    [class.disabled]="membersArray.controls.some(control => control.get('id')?.value === contact.id)"
+                  >
+                    {{ contact.name }}
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+          
+          <!-- Members list -->
+          <div class="members-list" formArrayName="members">
+            <div class="member-row" *ngFor="let member of membersArray.controls; let i = index" [formGroupName]="i">
+              <div class="member-info">
+                <i class="fas fa-user"></i>
+                <span class="member-name">{{ member.get('name')?.value === currentUser?.name ? 'You' : member.get('name')?.value }}</span>
+                <span class="member-email">{{ member.get('email')?.value }}</span>
+              </div>
+              
+              <button 
+                type="button" 
+                class="btn btn-sm btn-icon" 
+                (click)="removeMember(i)"
+                [disabled]="member.get('id')?.value === currentUser?.id"
+              >
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+            
+            <!-- Empty State -->
+            <div class="empty-members" *ngIf="membersArray.length === 0">
+              <i class="fas fa-user-friends"></i>
+              <p>No members added yet</p>
+              <p class="hint">Add at least one member to create a group</p>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Form Buttons -->
+        <div class="form-buttons">
+          <button type="button" class="btn btn-outline-secondary me-2" routerLink="/groups">Cancel</button>
+          <button 
+            type="submit" 
+            class="btn btn-primary" 
+            [disabled]="groupForm.invalid || isSubmitting || membersArray.length === 0"
+          >
+            <span *ngIf="!isSubmitting">{{ isEditing ? 'Update' : 'Create' }} Group</span>
+            <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

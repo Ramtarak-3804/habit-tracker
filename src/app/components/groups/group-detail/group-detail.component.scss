@@ -1,0 +1,339 @@
+.group-detail-container {
+  padding: 20px 0;
+  
+  .back-link {
+    margin-bottom: 20px;
+    
+    .btn-link {
+      color: #11998e;
+      text-decoration: none;
+      padding-left: 0;
+      
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+  
+  .group-detail {
+    .group-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+      
+      .group-title {
+        display: flex;
+        align-items: center;
+        
+        .group-icon {
+          width: 60px;
+          height: 60px;
+          border-radius: 50%;
+          background-color: rgba(17, 153, 142, 0.1);
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          color: #11998e;
+          font-size: 1.5rem;
+          margin-right: 20px;
+        }
+        
+        h2 {
+          margin-bottom: 5px;
+          font-weight: 600;
+        }
+        
+        .group-description {
+          color: #777;
+          margin: 0;
+        }
+      }
+      
+      .group-actions {
+        display: flex;
+        
+        .btn-primary {
+          background-color: #11998e;
+          border-color: #11998e;
+          
+          &:hover, &:focus {
+            background-color: darken(#11998e, 5%);
+            border-color: darken(#11998e, 5%);
+          }
+        }
+      }
+    }
+    
+    .balance-card {
+      text-align: center;
+      padding: 25px;
+      border-radius: 12px;
+      margin-bottom: 30px;
+      
+      &.positive {
+        background-color: #e8f5e9;
+        
+        h4 {
+          color: #388e3c;
+        }
+      }
+      
+      &.negative {
+        background-color: #ffebee;
+        
+        h4 {
+          color: #d32f2f;
+        }
+      }
+      
+      h4 {
+        font-weight: 500;
+        margin-bottom: 15px;
+      }
+      
+      .balance-amount {
+        font-size: 1.75rem;
+        font-weight: 600;
+      }
+    }
+    
+    .group-tabs {
+      margin-bottom: 20px;
+      
+      .nav-link {
+        color: #666;
+        font-weight: 500;
+        
+        &.active {
+          color: #11998e;
+          font-weight: 600;
+        }
+      }
+    }
+    
+    .group-tab-content {
+      margin-bottom: 30px;
+      
+      .card {
+        border: none;
+        border-radius: 12px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        overflow: hidden;
+        
+        .card-header {
+          background-color: #fff;
+          border-bottom: 1px solid #eaeaea;
+          padding: 15px 20px;
+          
+          h5 {
+            margin: 0;
+            font-weight: 600;
+          }
+        }
+        
+        .empty-state {
+          text-align: center;
+          padding: 40px 20px;
+          
+          i {
+            font-size: 3rem;
+            color: #ddd;
+            margin-bottom: 15px;
+          }
+          
+          p {
+            color: #777;
+            margin-bottom: 15px;
+          }
+          
+          .btn {
+            color: #11998e;
+            border-color: #11998e;
+            
+            &:hover {
+              background-color: #11998e;
+              color: white;
+            }
+          }
+        }
+      }
+      
+      // Balances list
+      .balances-list {
+        .balance-item {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 15px 20px;
+          border-bottom: 1px solid #eaeaea;
+          
+          &:last-child {
+            border-bottom: none;
+          }
+          
+          .member-info {
+            display: flex;
+            align-items: center;
+            
+            i {
+              width: 35px;
+              height: 35px;
+              background-color: rgba(17, 153, 142, 0.1);
+              color: #11998e;
+              border-radius: 50%;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              margin-right: 15px;
+            }
+            
+            .member-name {
+              font-weight: 500;
+            }
+          }
+          
+          .member-balance {
+            font-weight: 500;
+            
+            &.text-success {
+              color: #28a745 !important;
+            }
+            
+            &.text-danger {
+              color: #dc3545 !important;
+            }
+          }
+        }
+      }
+      
+      // Expense list
+      .expense-list {
+        .expense-item {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 15px 20px;
+          border-bottom: 1px solid #eaeaea;
+          cursor: pointer;
+          transition: background-color 0.2s;
+          
+          &:last-child {
+            border-bottom: none;
+          }
+          
+          &:hover {
+            background-color: #f8f9fa;
+          }
+          
+          .expense-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba(17, 153, 142, 0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #11998e;
+            margin-right: 15px;
+          }
+          
+          .expense-details {
+            flex: 1;
+            
+            h6 {
+              margin-bottom: 3px;
+              font-weight: 500;
+            }
+            
+            p {
+              margin: 0;
+              font-size: 0.85rem;
+              color: #777;
+            }
+          }
+          
+          .expense-amount {
+            font-weight: 600;
+            color: #333;
+          }
+        }
+      }
+      
+      // Members list
+      .members-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        
+        .member-item {
+          display: flex;
+          align-items: center;
+          padding: 15px 20px;
+          border-bottom: 1px solid #eaeaea;
+          
+          &:last-child {
+            border-bottom: none;
+          }
+          
+          .member-avatar {
+            width: 45px;
+            height: 45px;
+            background-color: rgba(17, 153, 142, 0.1);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #11998e;
+            margin-right: 15px;
+            font-size: 1.1rem;
+          }
+          
+          .member-details {
+            flex: 1;
+            
+            h6 {
+              margin-bottom: 3px;
+              font-weight: 500;
+            }
+            
+            p {
+              margin: 0;
+              font-size: 0.85rem;
+              color: #777;
+            }
+          }
+          
+          .member-status {
+            .badge {
+              background-color: #11998e;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .group-detail-container {
+    .group-detail {
+      .group-header {
+        flex-direction: column;
+        align-items: flex-start;
+        
+        .group-title {
+          margin-bottom: 20px;
+        }
+        
+        .group-actions {
+          width: 100%;
+          
+          .btn {
+            flex: 1;
+          }
+        }
+      }
+    }
+  }
+}

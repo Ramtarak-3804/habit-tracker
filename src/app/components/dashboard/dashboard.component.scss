@@ -1,0 +1,348 @@
+.dashboard-container {
+  padding: 20px 0;
+  
+  .welcome-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    
+    h1 {
+      font-weight: 600;
+      margin: 0;
+      color: #333;
+    }
+    
+    p {
+      color: #777;
+      margin: 0;
+    }
+    
+    .btn-primary {
+      background-color: #11998e;
+      border-color: #11998e;
+      
+      &:hover, &:focus {
+        background-color: darken(#11998e, 5%);
+        border-color: darken(#11998e, 5%);
+      }
+    }
+  }
+  
+  .summary-card {
+    height: 100%;
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    transition: all 0.3s ease;
+    
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+    
+    .card-body {
+      padding: 20px;
+      display: flex;
+      align-items: center;
+    }
+    
+    .card-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 1.5rem;
+      margin-right: 20px;
+      flex-shrink: 0;
+    }
+    
+    .card-details {
+      flex: 1;
+      
+      .card-title {
+        margin-bottom: 10px;
+        font-weight: 500;
+        color: #555;
+        font-size: 1rem;
+      }
+      
+      .card-amount {
+        font-size: 1.8rem;
+        font-weight: 700;
+        margin: 0;
+      }
+      
+      .placeholder-loading {
+        height: 32px;
+        width: 100%;
+        overflow: hidden;
+        position: relative;
+        border-radius: 4px;
+        
+        .animated-background {
+          height: 100%;
+          background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+          background-size: 200% 100%;
+          animation: loading 1.5s infinite;
+        }
+      }
+    }
+    
+    // Different card styles
+    &.owed {
+      background-color: #e1f5fe;
+      
+      .card-icon {
+        background-color: rgba(3, 169, 244, 0.1);
+        color: #03a9f4;
+      }
+      
+      .card-amount {
+        color: #0288d1;
+      }
+    }
+    
+    &.owing {
+      background-color: #fff8e1;
+      
+      .card-icon {
+        background-color: rgba(255, 193, 7, 0.1);
+        color: #ffc107;
+      }
+      
+      .card-amount {
+        color: #ffa000;
+      }
+    }
+    
+    &.total {
+      background-color: #e8f5e9;
+      
+      .card-icon {
+        background-color: rgba(76, 175, 80, 0.1);
+        color: #4caf50;
+      }
+      
+      &.positive {
+        .card-amount {
+          color: #388e3c;
+        }
+      }
+      
+      &.negative {
+        background-color: #fbe9e7;
+        
+        .card-icon {
+          background-color: rgba(244, 67, 54, 0.1);
+          color: #f44336;
+        }
+        
+        .card-amount {
+          color: #d32f2f;
+        }
+      }
+    }
+  }
+  
+  // Card styling
+  .card {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    margin-bottom: 20px;
+    
+    .card-header {
+      background-color: #fff;
+      border-bottom: 1px solid #eaeaea;
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      
+      h5 {
+        margin: 0;
+        font-weight: 600;
+        color: #333;
+      }
+    }
+  }
+  
+  // Activity list styling
+  .activity-list {
+    .activity-item {
+      padding: 15px;
+      border-bottom: 1px solid #eaeaea;
+      display: flex;
+      align-items: center;
+      
+      &:last-child {
+        border-bottom: none;
+      }
+      
+      .activity-icon {
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        background-color: rgba(17, 153, 142, 0.1);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #11998e;
+        font-size: 1.1rem;
+        margin-right: 15px;
+      }
+      
+      .activity-details {
+        flex: 1;
+        
+        h6 {
+          margin-bottom: 3px;
+          font-weight: 500;
+        }
+        
+        p {
+          margin-bottom: 3px;
+          color: #666;
+        }
+        
+        small {
+          color: #999;
+        }
+      }
+      
+      .activity-amount {
+        text-align: right;
+        font-weight: 500;
+        
+        &.text-success {
+          color: #28a745 !important;
+        }
+        
+        &.text-danger {
+          color: #dc3545 !important;
+        }
+      }
+    }
+  }
+  
+  // Groups list styling
+  .groups-list {
+    .group-item {
+      display: flex;
+      align-items: center;
+      padding: 15px;
+      border-bottom: 1px solid #eaeaea;
+      cursor: pointer;
+      transition: background-color 0.2s;
+      
+      &:last-child {
+        border-bottom: none;
+      }
+      
+      &:hover {
+        background-color: #f8f9fa;
+      }
+      
+      .group-icon {
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        background-color: rgba(17, 153, 142, 0.1);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #11998e;
+        font-size: 1.1rem;
+        margin-right: 15px;
+      }
+      
+      .group-details {
+        flex: 1;
+        
+        h6 {
+          margin-bottom: 3px;
+          font-weight: 500;
+        }
+        
+        p {
+          margin: 0;
+          color: #777;
+          font-size: 0.85rem;
+        }
+      }
+      
+      .group-amount {
+        font-weight: 500;
+        font-size: 0.9rem;
+        
+        &.text-success {
+          color: #28a745 !important;
+        }
+        
+        &.text-danger {
+          color: #dc3545 !important;
+        }
+      }
+    }
+  }
+  
+  // Empty state styling
+  .empty-state {
+    text-align: center;
+    padding: 30px 20px;
+    
+    i {
+      font-size: 3rem;
+      color: #ddd;
+      margin-bottom: 15px;
+    }
+    
+    p {
+      color: #777;
+      margin-bottom: 15px;
+    }
+    
+    .btn {
+      color: #11998e;
+      border-color: #11998e;
+      
+      &:hover {
+        background-color: #11998e;
+        color: white;
+      }
+    }
+  }
+}
+
+// Loading animation
+@keyframes loading {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+// Media queries for responsive design
+@media (max-width: 768px) {
+  .dashboard-container {
+    .welcome-section {
+      flex-direction: column;
+      align-items: flex-start;
+      
+      h1 {
+        margin-bottom: 5px;
+      }
+      
+      p {
+        margin-bottom: 15px;
+      }
+    }
+  }
+}

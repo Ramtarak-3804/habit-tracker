@@ -1,0 +1,100 @@
+<div class="expense-detail-container">
+  <div class="back-link">
+    <a routerLink="/expenses" class="btn btn-link">
+      <i class="fas fa-arrow-left"></i> Back to Expenses
+    </a>
+  </div>
+  
+  <!-- Loading Spinner -->
+  <div class="text-center my-5" *ngIf="isLoading">
+    <div class="spinner-border" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+  
+  <div class="expense-detail" *ngIf="!isLoading && expense">
+    <div class="expense-header">
+      <div class="expense-title">
+        <div class="category-icon">
+          <i class="fas" [ngClass]="expense.category.icon"></i>
+        </div>
+        <div>
+          <h2>{{ expense.description }}</h2>
+          <div class="expense-meta">
+            <span class="date">{{ expense.date | date:'MMM d, y' }}</span>
+            <span class="category">{{ expense.category.name }}</span>
+            <span class="group" *ngIf="expense.group">{{ expense.group.name }}</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="expense-actions" *ngIf="isOwner()">
+        <button type="button" class="btn btn-outline-secondary" (click)="editExpense()">
+          <i class="fas fa-edit"></i> Edit
+        </button>
+        <button type="button" class="btn btn-outline-danger" (click)="deleteExpense()" [disabled]="deleteInProgress">
+          <i class="fas" [ngClass]="deleteInProgress ? 'fa-spinner fa-spin' : 'fa-trash'"></i> Delete
+        </button>
+      </div>
+    </div>
+    
+    <div class="row mb-4">
+      <div class="col-md-6 offset-md-3">
+        <div class="expense-amount-card">
+          <div class="total-amount">
+            <span class="label">Total Amount</span>
+            <span class="amount">{{ expense.amount | currency }}</span>
+          </div>
+          <div class="paid-by">
+            <span class="label">Paid by</span>
+            <span class="value">
+              <i class="fas fa-user me-1"></i> 
+              {{ expense.paidBy.id === currentUser?.id ? 'You' : expense.paidBy.name }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="row">
+      <div class="col-md-8 offset-md-2">
+        <div class="card">
+          <div class="card-header">
+            <h5>Split Details</h5>
+          </div>
+          <div class="card-body p-0">
+            <div class="split-details">
+              <table class="table table-hover mb-0">
+                <thead>
+                  <tr>
+                    <th>Participant</th>
+                    <th class="text-center">Paid</th>
+                    <th class="text-center">Share</th>
+                    <th class="text-end">Net Balance</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let participant of expense.participants" [ngClass]="{'current-user': participant.id === currentUser?.id}">
+                    <td>
+                      <div class="participant-name">
+                        <i class="fas fa-user me-2"></i>
+                        {{ participant.id === currentUser?.id ? 'You' : participant.name }}
+                      </div>
+                    </td>
+                    <td class="text-center">{{ participant.paid | currency }}</td>
+                    <td class="text-center">{{ participant.share | currency }}</td>
+                    <td class="text-end" [ngClass]="{'text-success': participant.balance < 0, 'text-danger': participant.balance > 0}">
+                      <span *ngIf="participant.balance < 0">Gets back {{ -participant.balance | currency }}</span>
+                      <span *ngIf="participant.balance > 0">Owes {{ participant.balance | currency }}</span>
+                      <span *ngIf="participant.balance === 0">Settled</span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

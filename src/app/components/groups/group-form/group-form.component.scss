@@ -1,0 +1,206 @@
+.group-form-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px 0;
+  
+  .card {
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    border: none;
+    
+    .card-header {
+      background-color: #fff;
+      border-bottom: 1px solid #eaeaea;
+      padding: 20px;
+      
+      h4 {
+        margin: 0;
+        font-weight: 600;
+        color: #333;
+      }
+    }
+    
+    .card-body {
+      padding: 25px;
+    }
+  }
+  
+  .loading-spinner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 200px;
+  }
+  
+  .form-label {
+    font-weight: 500;
+    margin-bottom: 8px;
+    color: #555;
+  }
+  
+  // Icon selector styles
+  .icon-selector {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    
+    .icon-option {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+      padding: 10px;
+      border-radius: 8px;
+      transition: all 0.2s;
+      
+      &:hover {
+        background-color: #f8f9fa;
+      }
+      
+      &.selected {
+        background-color: rgba(17, 153, 142, 0.1);
+        
+        .icon-circle {
+          background-color: #11998e;
+          color: white;
+          transform: scale(1.1);
+        }
+        
+        .icon-name {
+          color: #11998e;
+          font-weight: 500;
+        }
+      }
+      
+      .icon-circle {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background-color: #f8f9fa;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 8px;
+        font-size: 1.2rem;
+        color: #666;
+        transition: all 0.2s;
+      }
+      
+      .icon-name {
+        font-size: 0.9rem;
+        color: #666;
+      }
+    }
+  }
+  
+  // Members section styles
+  .members-section {
+    h5 {
+      font-weight: 600;
+      color: #444;
+    }
+    
+    .members-list {
+      border: 1px solid #eaeaea;
+      border-radius: 8px;
+      overflow: hidden;
+      
+      .member-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 15px;
+        border-bottom: 1px solid #eaeaea;
+        
+        &:last-child {
+          border-bottom: none;
+        }
+        
+        .member-info {
+          display: flex;
+          align-items: center;
+          
+          i {
+            width: 35px;
+            height: 35px;
+            background-color: rgba(17, 153, 142, 0.1);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #11998e;
+            margin-right: 15px;
+          }
+          
+          .member-name {
+            font-weight: 500;
+            margin-right: 10px;
+          }
+          
+          .member-email {
+            color: #777;
+            font-size: 0.85rem;
+          }
+        }
+        
+        .btn-icon {
+          padding: 6px 8px;
+          color: #999;
+          transition: all 0.2s;
+          
+          &:hover {
+            color: #dc3545;
+          }
+          
+          &:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+          }
+        }
+      }
+      
+      .empty-members {
+        text-align: center;
+        padding: 40px 20px;
+        
+        i {
+          font-size: 2.5rem;
+          color: #ddd;
+          margin-bottom: 15px;
+        }
+        
+        p {
+          color: #777;
+          margin-bottom: 5px;
+        }
+        
+        .hint {
+          color: #999;
+          font-size: 0.85rem;
+        }
+      }
+    }
+  }
+  
+  .form-buttons {
+    margin-top: 30px;
+    display: flex;
+    justify-content: flex-end;
+    
+    .btn-primary {
+      background-color: #11998e;
+      border-color: #11998e;
+      min-width: 150px;
+      
+      &:hover, &:focus {
+        background-color: #0d8a7e;
+        border-color: #0d8a7e;
+      }
+      
+      &:disabled {
+        background-color: #75c5be;
+        border-color: #75c5be;
+      }
+    }
+  }
+}

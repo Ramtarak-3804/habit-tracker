@@ -1,0 +1,61 @@
+<div class="group-list-container">
+  <div class="groups-header">
+    <h2>Your Groups</h2>
+    <button routerLink="/groups/new" class="btn btn-primary">
+      <i class="fas fa-plus"></i> Create Group
+    </button>
+  </div>
+  
+  <!-- Loading Spinner -->
+  <div class="text-center my-5" *ngIf="isLoading">
+    <div class="spinner-border" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+  
+  <!-- Groups List -->
+  <div class="groups-grid" *ngIf="!isLoading">
+    <div *ngIf="groups.length === 0" class="empty-state">
+      <i class="fas fa-users"></i>
+      <h3>No Groups Yet</h3>
+      <p>Create a group to start tracking shared expenses with friends, roommates or family.</p>
+      <button routerLink="/groups/new" class="btn btn-outline-primary">Create Your First Group</button>
+    </div>
+    
+    <div class="row" *ngIf="groups.length > 0">
+      <div class="col-md-4 mb-4" *ngFor="let group of groups">
+        <div class="group-card" [routerLink]="['/groups', group.id]">
+          <div class="group-card-header">
+            <div class="group-icon">
+              <i class="fas" [ngClass]="group.icon || 'fa-users'"></i>
+            </div>
+            <h3 class="group-title">{{ group.name }}</h3>
+            <p class="group-description">{{ group.description }}</p>
+          </div>
+          
+          <div class="group-card-content">
+            <div class="members-count">
+              <i class="fas fa-user-friends"></i>
+              <span>{{ group.memberCount }} members</span>
+            </div>
+            
+            <div class="group-stats">
+              <div class="expense-count">
+                <span class="stats-label">Expenses</span>
+                <span class="stats-value">{{ group.expenses?.length || 0 }}</span>
+              </div>
+              <div class="balance" [ngClass]="{'positive': group.balance < 0, 'negative': group.balance > 0}">
+                <span class="stats-label">Your Balance</span>
+                <span class="stats-value">
+                  <span *ngIf="group.balance < 0">You get back {{ -group.balance | currency }}</span>
+                  <span *ngIf="group.balance > 0">You owe {{ group.balance | currency }}</span>
+                  <span *ngIf="group.balance === 0">Settled up</span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

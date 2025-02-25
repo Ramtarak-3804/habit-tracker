@@ -1,0 +1,245 @@
+<div class="expense-form-container">
+  <div class="card">
+    <div class="card-header">
+      <h4>{{ isEditing ? 'Edit Expense' : 'Add New Expense' }}</h4>
+    </div>
+    <div class="card-body">
+      <div *ngIf="isLoading" class="loading-spinner">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+      
+      <form [formGroup]="expenseForm" (ngSubmit)="onSubmit()" *ngIf="!isLoading">
+        <!-- Basic Expense Info -->
+        <div class="row">
+          <div class="col-md-6">
+            <div class="mb-3">
+              <label for="description" class="form-label">Description*</label>
+              <input 
+                type="text" 
+                class="form-control" 
+                id="description" 
+                formControlName="description" 
+                placeholder="What was this expense for?"
+                [ngClass]="{'is-invalid': expenseForm.get('description')?.touched && expenseForm.get('description')?.invalid}"
+              >
+              <div class="invalid-feedback" *ngIf="expenseForm.get('description')?.touched && expenseForm.get('description')?.invalid">
+                Description is required
+              </div>
+            </div>
+          </div>
+          
+          <div class="col-md-3">
+            <div class="mb-3">
+              <label for="amount" class="form-label">Amount*</label>
+              <div class="input-group">
+                <span class="input-group-text">$</span>
+                <input 
+                  type="number" 
+                  class="form-control" 
+                  id="amount" 
+                  formControlName="amount" 
+                  placeholder="0.00"
+                  step="0.01"
+                  min="0.01"
+                  (change)="onAmountChange()"
+                  [ngClass]="{'is-invalid': expenseForm.get('amount')?.touched && expenseForm.get('amount')?.invalid}"
+                >
+                <div class="invalid-feedback" *ngIf="expenseForm.get('amount')?.touched && expenseForm.get('amount')?.invalid">
+                  <div *ngIf="expenseForm.get('amount')?.errors?.required">Amount is required</div>
+                  <div *ngIf="expenseForm.get('amount')?.errors?.min">Amount must be greater than 0</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="col-md-3">
+            <div class="mb-3">
+              <label for="date" class="form-label">Date*</label>
+              <input 
+                type="date" 
+                class="form-control" 
+                id="date" 
+                formControlName="date"
+                [ngClass]="{'is-invalid': expenseForm.get('date')?.touched && expenseForm.get('date')?.invalid}"
+              >
+              <div class="invalid-feedback" *ngIf="expenseForm.get('date')?.touched && expenseForm.get('date')?.invalid">
+                Date is required
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="row">
+          <div class="col-md-4">
+            <div class="mb-3">
+              <label for="categoryId" class="form-label">Category*</label>
+              <select 
+                class="form-select" 
+                id="categoryId" 
+                formControlName="categoryId"
+                [ngClass]="{'is-invalid': expenseForm.get('categoryId')?.touched && expenseForm.get('categoryId')?.invalid}"
+              >
+                <option [ngValue]="null" disabled>Select a category</option>
+                <option *ngFor="let category of categories" [value]="category.id">
+                  <i class="fas" [ngClass]="category.icon"></i> {{ category.name }}
+                </option>
+              </select>
+              <div class="invalid-feedback" *ngIf="expenseForm.get('categoryId')?.touched && expenseForm.get('categoryId')?.invalid">
+                Category is required
+              </div>
+            </div>
+          </div>
+          
+          <div class="col-md-4">
+            <div class="mb-3">
+              <label for="groupId" class="form-label">Group (Optional)</label>
+              <select 
+                class="form-select" 
+                id="groupId" 
+                formControlName="groupId"
+                (change)="onGroupChange($any($event.target).value)"
+              >
+                <option [ngValue]="null">No group</option>
+                <option *ngFor="let group of groups" [value]="group.id">{{ group.name }}</option>
+              </select>
+            </div>
+          </div>
+          
+          <div class="col-md-4">
+            <div class="mb-3">
+              <label for="paidById" class="form-label">Paid by*</label>
+              <select 
+                class="form-select" 
+                id="paidById" 
+                formControlName="paidById"
+                [ngClass]="{'is-invalid': expenseForm.get('paidById')?.touched && expenseForm.get('paidById')?.invalid}"
+              >
+                <option [ngValue]="null" disabled>Select who paid</option>
+                <option *ngFor="let member of members" [value]="member.id">
+                  {{ member.id === currentUser?.id ? 'You' : member.name }}
+                </option>
+              </select>
+              <div class="invalid-feedback" *ngIf="expenseForm.get('paidById')?.touched && expenseForm.get('paidById')?.invalid">
+                Please select who paid
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Split Options -->
+        <div class="split-options mb-4">
+          <h5>How do you want to split this expense?</h5>
+          
+          <div class="split-type-buttons">
+            <button 
+              type="button" 
+              class="btn" 
+              *ngFor="let type of splitTypes"
+              [class.btn-primary]="selectedSplitType === type.id"
+              [class.btn-outline-primary]="selectedSplitType !== type.id"
+              (click)="onSplitTypeChange(type.id)"
+            >
+              {{ type.name }}
+            </button>
+          </div>
+        </div>
+        
+        <!-- Participants -->
+        <div class="participants-section mb-4">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5>Split with</h5>
+            
+            <!-- Add participant dropdown -->
+            <div class="dropdown">
+              <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="addParticipantDropdown" data-bs-toggle="dropdown">
+                <i class="fas fa-plus"></i> Add Person
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="addParticipantDropdown">
+                <li *ngFor="let member of members">
+                  <a 
+                    class="dropdown-item" 
+                    href="javascript:void(0)" 
+                    (click)="addParticipant(member)"
+                    [class.disabled]="participantsArray.controls.some(control => control.get('id')?.value === member.id)"
+                  >
+                    {{ member.name }}
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+          
+          <!-- Participants list -->
+          <div class="participants-list" formArrayName="participants">
+            <div class="participant-row" *ngFor="let participant of participantsArray.controls; let i = index" [formGroupName]="i">
+              <div class="participant-info">
+                <i class="fas fa-user"></i>
+                <span class="participant-name">{{ participant.get('name')?.value === currentUser?.name ? 'You' : participant.get('name')?.value }}</span>
+              </div>
+              
+              <div class="participant-share" [ngSwitch]="selectedSplitType">
+                <!-- Equal Split -->
+                <div *ngSwitchCase="'equal'" class="equal-share">
+                  <span>${{ participant.get('share')?.value }}</span>
+                </div>
+                
+                <!-- Exact Amounts -->
+                <div *ngSwitchCase="'exact'" class="exact-amount">
+                  <div class="input-group">
+                    <span class="input-group-text">$</span>
+                    <input 
+                      type="number" 
+                      class="form-control" 
+                      formControlName="share"
+                      step="0.01" 
+                      min="0"
+                    >
+                  </div>
+                </div>
+                
+                <!-- Percentage -->
+                <div *ngSwitchCase="'percentage'" class="percentage">
+                  <div class="input-group">
+                    <input 
+                      type="number" 
+                      class="form-control" 
+                      formControlName="share"
+                      step="1" 
+                      min="0" 
+                      max="100"
+                    >
+                    <span class="input-group-text">%</span>
+                  </div>
+                </div>
+              </div>
+              
+              <button 
+                type="button" 
+                class="btn btn-sm btn-icon" 
+                (click)="removeParticipant(i)"
+                *ngIf="participantsArray.length > 1"
+              >
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Form Buttons -->
+        <div class="form-buttons">
+          <button type="button" class="btn btn-outline-secondary me-2" routerLink="/expenses">Cancel</button>
+          <button 
+            type="submit" 
+            class="btn btn-primary" 
+            [disabled]="expenseForm.invalid || isSubmitting"
+          >
+            <span *ngIf="!isSubmitting">{{ isEditing ? 'Update' : 'Save' }} Expense</span>
+            <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
